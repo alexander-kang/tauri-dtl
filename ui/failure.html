@@ -1,0 +1,21 @@
+<!-- failure.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>File Distribution GUI</title>
+  </head>
+  <body>
+    <h1>File Distribution GUI</h1>
+    <br><br><br><br><br><br><br><br><br><br>
+    <p id="failure">Something seems to have gone wrong. Double check the source and destination paths you provided.<br>
+        You can close this window by pressing here:</p>
+    <button type="button" id="failure-close-button">Close</button>
+
+    <script src="failure.js"></script>
+  </body>
+</html>

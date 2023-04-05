@@ -1,0 +1,62 @@
+/* styles.css */
+
+h1 {
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+#subtitle {
+    text-align: center;
+    line-height: 150%;
+}
+
+#warning-note {
+    text-align: center;
+}
+
+.button-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.button-box button {
+    margin-top: 1%;
+}
+
+.button-box p {
+    padding-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 0;
+}
+
+#form-error-text {
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+    color: red;
+}
+
+#submit {
+    margin: 0 auto;
+    display: block;
+}
+
+#success {
+    text-align: center;
+}
+
+#failure {
+    text-align: center;
+    line-height: 150%;
+}
+
+#success-close-button {
+    margin: 0 auto;
+    display: block;
+}
+
+#failure-close-button {
+    margin: 0 auto;
+    display: block;
+}
