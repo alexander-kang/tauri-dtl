@@ -41,12 +41,13 @@ submit.addEventListener('click', function() {
 })
 
 // Runs when the file browse button on the local source path is pressed
-// Opens the file browser by sending a command to main over IPC
+// Opens the file browser dialog and updates the corresponding global variable accordingly
 const srcButtonFile = document.getElementById('src-button-file')
-srcButtonFile.addEventListener('click', function(event) {
-    ipcRenderer.send('srcOpenDialogFile')
-})
-ipcRenderer.on('srcSelectedFile', function(event, path) {
+srcButtonFile.addEventListener('click', function() {
+    // TODO: add open dialog logic here
+    // store the path in a variable called `path`
+
+    // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
     document.getElementById('src-file-box').innerHTML =
     `<div id="src-file-box">
         Select the file to be transferred:<br>
@@ -55,30 +56,40 @@ ipcRenderer.on('srcSelectedFile', function(event, path) {
             <p id="src-path-file"></p>
         </div>
     </div>`
+    // Shows the user's selected file path after the select file button
     document.getElementById('src-path-file').innerHTML = path
+    // Gets rid of the select folder button
     document.getElementById('src-folder-box').innerHTML = ""
+    // Update internal state
     srcPath = path
 })
 
 // Runs when the folder browse button on the local source path is pressed
-// Opens the file browser by sending a command to main over IPC
+// Opens the folder browser dialog and updates the corresponding global variable accordingly
 const srcButtonFolder = document.getElementById('src-button-folder')
-srcButtonFolder.addEventListener('click', function(event) {
-    ipcRenderer.send('srcOpenDialogFolder')
-})
-ipcRenderer.on('srcSelectedFolder', function(event, path) {
+srcButtonFolder.addEventListener('click', function() {
+    // TODO: add open dialog logic here
+    // store the path in a variable called `path`
+
+    // Shows the user's selected folder path after the select folder button
     document.getElementById('src-path-folder').innerHTML = path
+    // Gets rid of the select file button
     document.getElementById('src-file-box').innerHTML = ""
+    // Update internal state
     srcPath = path
 })
 
 // Runs when the browse button on the remote destination path is pressed
-// Opens the file browser by sending a command to main over IPC
+// Opens the file browser dialog and updates the corresponding global variable accordingly
 const dstButton = document.getElementById('dst-button')
-dstButton.addEventListener('click', function(event) {
-    ipcRenderer.send('dstOpenDialog')
-})
-ipcRenderer.on('dstSelected', function(event, path) {
-    document.getElementById('dst-path').innerHTML = path[0].substring(path[0].indexOf("$") - 1)
+dstButton.addEventListener('click', function() {
+    // TODO: add open dialog logic here
+    // store the path in a variable called `path`
+
+    // Parse the path so that it can be used for file operations
+    path = path.substring(path.indexOf("$") - 1)
+    // Shows the user's post-parsing selected folder path after the select destination button
+    document.getElementById('dst-path').innerHTML = path
+    // Update internal state
     dstPath = path
 })
