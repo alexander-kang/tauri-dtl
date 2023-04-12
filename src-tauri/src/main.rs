@@ -5,8 +5,6 @@
   windows_subsystem = "windows"
 )]
 
-use std::path::Path;
-
 // Function that helps the custom command perform file operations
 // Returns a bool:
 //     true - success
@@ -22,8 +20,8 @@ fn fs_helper(src_path: &str, dst_path: &str) -> bool {
 
   // Do the file operations and based on the copy_items() return value, return the corresponding integer
   match fs_extra::copy_items(&from, dst_path, &options) {
-    Ok(i) => return true,
-    Err(e) => return false
+    Ok(_i) => return true,
+    Err(_e) => return false
   };
 }
 

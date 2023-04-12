@@ -80,16 +80,23 @@ submit.addEventListener('click', function() {
     }
 })
 
+// Helper functions for opening dialogs
+async function openSrcFileDialog() {
+    open({
+        directory: false,
+        multiple: false,
+        title: "Select Source File"
+    }).then((path) => { return path })
+}
+
 // Runs when the file browse button on the local source path is pressed
 // Opens the file browser dialog and updates the corresponding global variable accordingly
 const srcButtonFile = document.getElementById('src-button-file')
 srcButtonFile.addEventListener('click', function() {
     // File dialog
-    const path = open({
-        directory: false,
-        multiple: false,
-        title: "Select Source File"
-    })
+    path = openSrcFileDialog()
+    while (path === undefined) {}
+        
 
     // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
     document.getElementById('src-file-box').innerHTML =
