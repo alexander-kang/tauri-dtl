@@ -13,8 +13,12 @@
     <h1>File Distribution GUI</h1>
     <br><br><br><br><br><br><br><br><br><br>
     <p id="success">Success! You can close this window by pressing here:</p>
-    <button type="button" id="success-close-button">Close</button>
+    <button type="button" id="success-close-button" onclick="close()">Close</button>
 
-    <script src="renderer.js"></script>
+    <script>
+      function close() {
+        window.close()
+      }
+    </script>
   </body>
 </html>

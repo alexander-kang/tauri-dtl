@@ -1,8 +1,10 @@
 // renderer.js
 
 // API imports
-import { open } from '@tauri-apps/api/dialog' // Opening dialogs
-import { invoke } from '@tauri-apps/api/tauri' // Calling custom commands
+// import { open } from '@tauri-apps/api/dialog' // Opening dialogs
+// import { invoke } from '@tauri-apps/api/tauri' // Calling custom commands
+const open = window.__TAURI__.dialog.open
+const invoke = window.__TAURI__.invoke
 
 // Global variables
 var srcPath // File path to copy from
@@ -144,18 +146,4 @@ dstButton.addEventListener('click', function() {
     document.getElementById('dst-path').innerHTML = path
     // Update internal state
     dstPath = path
-})
-
-// Runs when the close button is pressed on the success page
-// Simply closes the window
-const successCloseButton = document.getElementById('success-close-button')
-successCloseButton.addEventListener('click', function() {
-    window.close()
-})
-
-// Runs when the close button is pressed on the failure page
-// Simply closes the window
-const failureCloseButton = document.getElementById('failure-close-button')
-failureCloseButton.addEventListener('click', function() {
-    window.close()
 })

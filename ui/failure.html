@@ -16,8 +16,12 @@
     <p id="failure-replace"></p>
     <p>Double check the source and destination paths you provided.</p>
     <p>You can close this window by pressing here:</p>
-    <button type="button" id="failure-close-button">Close</button>
+    <button type="button" id="failure-close-button" onclick="close()">Close</button>
 
-    <script src="renderer.js"></script>
+    <script>
+      function close() {
+        window.close()
+      }
+    </script>
   </body>
 </html>

@@ -5,6 +5,8 @@
   windows_subsystem = "windows"
 )]
 
+use std::path::Path;
+
 // Function that helps the custom command perform file operations
 // Returns a bool:
 //     true - success
@@ -45,7 +47,7 @@ fn fs_helper(src_path: &str, dst_path: &str) -> bool {
 #[tauri::command]
 fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> u8 {
   // Return value
-  let ret: u8 = 0;
+  let mut ret: u8 = 0;
 
   // // Testing code:
   // let rc = fs_helper(src_path, "put_testing_dst_here");
@@ -56,21 +58,21 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> u8
   // }
 
   // Right half of template
-  const template_right: &str = ".mcc.northwestern.edu\\";
+  let template_right: String = ".mcc.northwestern.edu\\".to_string();
 
   // Check if Bodeen is being worked on
-  if labs[0] {
+  if arr_labs[0] {
     // Variable that lets us know if there was a failure in executing a file operation
-    let failure: bool = false;
+    let mut failure: bool = false;
     // Left half of template for Bodeen
-    const bodeen_template_left: &str = "\\\\bodeen-0";
+    let bodeen_template_left: String = "\\\\bodeen-0".to_string();
     // Copy files to all 5 of the Bodeen systems
     for i in 1..6 {
-      let i_str: &str = i.into();
+      let i_str: String = i.to_string();
       // Put everything together to get the final destination path
-      let combined_bodeen_dst_path = bodeen_template_left + i_str + template_right + dst_path;
+      let combined_bodeen_dst_path = format!("{}{}{}{}", bodeen_template_left, i_str, template_right, dst_path);
       // Perform file operation
-      let rc = fs_helper(src_path, combined_bodeen_dst_path);
+      let rc = fs_helper(src_path, combined_bodeen_dst_path.as_str());
       // If the file operation failed, update the failure variable
       if !rc {
         failure = true;
@@ -83,18 +85,18 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> u8
   }
 
   // Check if MSE is being worked on
-  if labs[1] {
+  if arr_labs[1] {
     // Variable that lets us know if there was a failure in executing a file operation
-    let failure: bool = false;
+    let mut failure: bool = false;
     // Left half of template for MSE
-    const mse_template_left: &str = "\\\\mse-0";
+    let mse_template_left: String = "\\\\mse-0".to_string();
     // Copy files to all 7 of the MSE systems
     for i in 1..8 {
-      let i_str: &str = i.into();
+      let i_str: String = i.to_string();
       // Put everything together to get the final destination path
-      let combined_mse_dst_path = mse_template_left + i_str + template_right + dst_path;
+      let combined_mse_dst_path = format!("{}{}{}{}", mse_template_left, i_str, template_right, dst_path);
       // Perform file operation
-      let rc = fs_helper(src_path, combined_mse_dst_path);
+      let rc = fs_helper(src_path, combined_mse_dst_path.as_str());
       // If the file operation failed, update the failure variable
       if !rc {
         failure = true;
@@ -107,18 +109,18 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> u8
   }
 
   // Check if ChBe is being worked on
-  if labs[2] {
+  if arr_labs[2] {
     // Variable that lets us know if there was a failure in executing a file operation
-    let failure: bool = false;
+    let mut failure: bool = false;
     // Left half of template for ChBe
-    const chbe_template_left: &str = "\\\\e1-chbe-0";
+    let chbe_template_left: String = "\\\\e1-chbe-0".to_string();
     // Copy files to all 8 of the ChBe systems
     for i in 1..9 {
-      let i_str: &str = i.into();
+      let i_str: String = i.to_string();
       // Put everything together to get the final destination path
-      let combined_chbe_dst_path = chbe_template_left + i_str + template_right + dst_path;
+      let combined_chbe_dst_path = format!("{}{}{}{}", chbe_template_left, i_str, template_right, dst_path);
       // Perform file operation
-      let rc = fs_helper(src_path, combined_chbe_dst_path);
+      let rc = fs_helper(src_path, combined_chbe_dst_path.as_str());
       // If the file operation failed, update the failure variable
       if !rc {
         failure = true;
@@ -131,18 +133,18 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> u8
   }
 
   // Check if Segal is being worked on
-  if labs[3] {
+  if arr_labs[3] {
     // Variable that lets us know if there was a failure in executing a file operation
-    let failure: bool = false;
+    let mut failure: bool = false;
     // Left half of template for Segal
-    const segal_template_left: &str = "\\\\e1-segal-0";
+    let segal_template_left: String = "\\\\e1-segal-0".to_string();
     // Copy files to all 7 of the Segal systems
     for i in 1..8 {
-      let i_str: &str = i.into();
+      let i_str: String = i.to_string();
       // Put everything together to get the final destination path
-      let combined_segal_dst_path = segal_template_left + i_str + template_right + dst_path;
+      let combined_segal_dst_path = format!("{}{}{}{}", segal_template_left, i_str, template_right, dst_path);
       // Perform file operation
-      let rc = fs_helper(src_path, combined_segal_dst_path);
+      let rc = fs_helper(src_path, combined_segal_dst_path.as_str());
       // If the file operation failed, update the failure variable
       if !rc {
         failure = true;
@@ -155,18 +157,18 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> u8
   }
 
   // Check if MCC is being worked on
-  if labs[4] {
+  if arr_labs[4] {
     // Variable that lets us know if there was a failure in executing a file operation
-    let failure: bool = false;
+    let mut failure: bool = false;
     // Left half of template for MCC
-    const mcc_template_left: &str = "\\\\e1-mcc-0";
+    let mcc_template_left: String = "\\\\e1-mcc-0".to_string();
     // Copy files to all 26 of the MCC systems
     for i in 1..27 {
-      let i_str: &str = i.into();
+      let i_str: String = i.to_string();
       // Put everything together to get the final destination path
-      let combined_mcc_dst_path = mcc_template_left + i_str + template_right + dst_path;
+      let combined_mcc_dst_path = format!("{}{}{}{}", mcc_template_left, i_str, template_right, dst_path);
       // Perform file operation
-      let rc = fs_helper(src_path, combined_mcc_dst_path);
+      let rc = fs_helper(src_path, combined_mcc_dst_path.as_str());
       // If the file operation failed, update the failure variable
       if !rc {
         failure = true;
