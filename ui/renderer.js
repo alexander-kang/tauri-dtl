@@ -1,7 +1,6 @@
 // renderer.js
 
 // API imports
-import { listen } from '@tauri-apps/api/event' // Listening to events from backend
 import { open } from '@tauri-apps/api/dialog' // Opening dialogs
 import { invoke } from '@tauri-apps/api/tauri' // Calling custom commands
 
@@ -36,7 +35,46 @@ submit.addEventListener('click', function() {
     else {
         document.getElementById('form-error-text').innerHTML = ""
         // Note: the argument names are in camelCase here because the documentation said they should be (see: https://tauri.app/v1/guides/features/command/)
-        invoke('handle_form_submit', { arrLabs: labs, srcPath: srcPath, dstPath: dstPath })
+        invoke('handle_form_submit', { arrLabs: labs, srcPath: srcPath, dstPath: dstPath }).then(function(ret) {
+            // Handling the return value
+            // To see the details about the encoding of the return value, look at the code in main.rs
+            if (!ret) {
+                // Successful operations so load the corresponding page
+                window.location.href = "success.html"
+            } else {
+                // Some operation failed so load the corresponding page
+                window.location.href = "failure.html"
+                let failureString = "Specifically, file operations with the following labs seem to have failed:\n"
+
+                // Now go through the return value and find out which lab(s) failed
+                let failureStringLabs = ""
+
+                // Look at Bodeen
+                if ((ret >> 1) & 1) {
+                    failureStringLabs += "Bodeen "
+                }
+                // Look at MSE
+                if ((ret >> 2) & 1) {
+                    failureStringLabs += "MSE "
+                }
+                // Look at ChBe
+                if ((ret >> 3) & 1) {
+                    failureStringLabs += "ChBe "
+                }
+                // Look at Segal
+                if ((ret >> 4) & 1) {
+                    failureStringLabs += "Segal "
+                }
+                // Look at MCC
+                if ((ret >> 5) & 1) {
+                    failureStringLabs += "MCC"
+                }
+
+                failureString = failureString + failureStringLabs
+
+                document.getElementById('failure-replace').innerHTML = failureString
+            }
+        })
     }
 })
 
@@ -44,8 +82,12 @@ submit.addEventListener('click', function() {
 // Opens the file browser dialog and updates the corresponding global variable accordingly
 const srcButtonFile = document.getElementById('src-button-file')
 srcButtonFile.addEventListener('click', function() {
-    // TODO: add open dialog logic here
-    // store the path in a variable called `path`
+    // File dialog
+    const path = open({
+        directory: false,
+        multiple: false,
+        title: "Select Source File"
+    })
 
     // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
     document.getElementById('src-file-box').innerHTML =
@@ -68,8 +110,13 @@ srcButtonFile.addEventListener('click', function() {
 // Opens the folder browser dialog and updates the corresponding global variable accordingly
 const srcButtonFolder = document.getElementById('src-button-folder')
 srcButtonFolder.addEventListener('click', function() {
-    // TODO: add open dialog logic here
-    // store the path in a variable called `path`
+    // Folder dialog
+    const path = open({
+        directory: true,
+        multiple: false,
+        recursive: true,
+        title: "Select Source Folder"
+    })
 
     // Shows the user's selected folder path after the select folder button
     document.getElementById('src-path-folder').innerHTML = path
@@ -80,11 +127,16 @@ srcButtonFolder.addEventListener('click', function() {
 })
 
 // Runs when the browse button on the remote destination path is pressed
-// Opens the file browser dialog and updates the corresponding global variable accordingly
+// Opens the folder browser dialog and updates the corresponding global variable accordingly
 const dstButton = document.getElementById('dst-button')
 dstButton.addEventListener('click', function() {
-    // TODO: add open dialog logic here
-    // store the path in a variable called `path`
+    // Folder dialog
+    const path = open({
+        directory: true,
+        multiple: false,
+        recursive: false,
+        title: "Select Destination Folder"
+    })
 
     // Parse the path so that it can be used for file operations
     path = path.substring(path.indexOf("$") - 1)
@@ -92,4 +144,18 @@ dstButton.addEventListener('click', function() {
     document.getElementById('dst-path').innerHTML = path
     // Update internal state
     dstPath = path
+})
+
+// Runs when the close button is pressed on the success page
+// Simply closes the window
+const successCloseButton = document.getElementById('success-close-button')
+successCloseButton.addEventListener('click', function() {
+    window.close()
+})
+
+// Runs when the close button is pressed on the failure page
+// Simply closes the window
+const failureCloseButton = document.getElementById('failure-close-button')
+failureCloseButton.addEventListener('click', function() {
+    window.close()
 })

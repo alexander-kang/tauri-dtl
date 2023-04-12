@@ -46,7 +46,7 @@ h1 {
     text-align: center;
 }
 
-#failure {
+#failure p {
     text-align: center;
     line-height: 150%;
 }
