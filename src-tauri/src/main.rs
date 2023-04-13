@@ -48,7 +48,7 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> u8
   let mut ret: u8 = 0;
 
   // Testing code:
-  let rc = fs_helper(src_path, "put_testing_dst_here");
+  let rc = fs_helper(src_path, dst_path);
   if rc {
     ret = 0;
   } else {
