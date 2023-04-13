@@ -1,10 +1,8 @@
 // renderer.js
 
 // API imports
-// import { open } from '@tauri-apps/api/dialog' // Opening dialogs
-// import { invoke } from '@tauri-apps/api/tauri' // Calling custom commands
-const open = window.__TAURI__.dialog.open
-const invoke = window.__TAURI__.invoke
+const open = window.__TAURI__.dialog.open // Opening dialogs
+const invoke = window.__TAURI__.invoke // Calling custom commands
 
 // Global variables
 var srcPath // File path to copy from
@@ -37,19 +35,38 @@ submit.addEventListener('click', function() {
         document.getElementById('form-error-text').innerHTML = ""
         // Note: the argument names are in camelCase here because the documentation said they should be (see: https://tauri.app/v1/guides/features/command/)
         invoke('handle_form_submit', { arrLabs: labs, srcPath: srcPath, dstPath: dstPath }).then(function(ret) {
+            console.log(ret)
             // Handling the return value
             // To see the details about the encoding of the return value, look at the code in main.rs
             if (!ret) {
-                // Successful operations so load the corresponding page
-                window.location.href = "success.html"
+                // Successful operations so change the HTML accordingly
+                // Note that I chose not to simply load a different HTML page since I need to do something if there's a failure (see below for more info)
+                document.getElementById("body").innerHTML =
+                `<h1>File Distribution GUI</h1>
+                <br><br><br><br><br><br><br><br><br><br>
+                <p id="success">Success! You can close this window now.</p>`
             } else {
-                // Some operation failed so load the corresponding page
-                window.location.href = "failure.html"
+                // Some operation failed so change the HTML accordingly
+                document.getElementById("body").innerHTML =
+                `<span id="failure">
+                    <h1>File Distribution GUI</h1>
+                    <br><br><br><br><br><br><br><br><br><br>
+                    <p>Something seems to have gone wrong.</p>
+                    <p id="failure-replace"></p>
+                    <p>Double check the source and destination paths you provided.</p>
+                    <p>You can close this window now.</p>
+                </span>`
+
+                // I couldn't think of a way to get the failure string into the HTML if we loaded a different page so that's why I simply changed the HTML
                 let failureString = "Specifically, file operations with the following labs seem to have failed:\n"
 
                 // Now go through the return value and find out which lab(s) failed
                 let failureStringLabs = ""
 
+                // Testing
+                if (ret & 1) {
+                    failureStringLabs += "TestingFailure "
+                }
                 // Look at Bodeen
                 if ((ret >> 1) & 1) {
                     failureStringLabs += "Bodeen "
@@ -92,12 +109,10 @@ srcButtonFile.addEventListener('click', async function() {
 
     // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
     document.getElementById('src-file-box').innerHTML =
-    `<div id="src-file-box">
-        Select the file to be transferred:<br>
-        <div class="button-box">
-            <button type="button" id="src-button-file">Select</button>
-            <p id="src-path-file"></p>
-        </div>
+    `Select the file to be transferred:<br>
+    <div class="button-box">
+        <button type="button" id="src-button-file">Select</button>
+        <p id="src-path-file"></p>
     </div>`
     // Shows the user's selected file path after the select file button
     document.getElementById('src-path-file').innerHTML = path

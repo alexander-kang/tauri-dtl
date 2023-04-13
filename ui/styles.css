@@ -50,13 +50,3 @@ h1 {
     text-align: center;
     line-height: 150%;
 }
-
-#success-close-button {
-    margin: 0 auto;
-    display: block;
-}
-
-#failure-close-button {
-    margin: 0 auto;
-    display: block;
-}
