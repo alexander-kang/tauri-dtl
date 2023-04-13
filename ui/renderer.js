@@ -33,7 +33,6 @@ submit.addEventListener('click', function() {
         document.getElementById('form-error-text').innerHTML = "You must respond to every field of this form!"
     }
     // If everything looks fine, call the custom command `handle_form_submit`
-    // Note that we didn't make it async because we're not really concerned about the speed of the operations here (there's not that many lab machines) and it being async could lead to some race conditions
     else {
         document.getElementById('form-error-text').innerHTML = ""
         // Note: the argument names are in camelCase here because the documentation said they should be (see: https://tauri.app/v1/guides/features/command/)
@@ -80,23 +79,16 @@ submit.addEventListener('click', function() {
     }
 })
 
-// Helper functions for opening dialogs
-async function openSrcFileDialog() {
-    open({
-        directory: false,
-        multiple: false,
-        title: "Select Source File"
-    }).then((path) => { return path })
-}
-
 // Runs when the file browse button on the local source path is pressed
 // Opens the file browser dialog and updates the corresponding global variable accordingly
 const srcButtonFile = document.getElementById('src-button-file')
-srcButtonFile.addEventListener('click', function() {
+srcButtonFile.addEventListener('click', async function() {
     // File dialog
-    path = openSrcFileDialog()
-    while (path === undefined) {}
-        
+    let path = await open({
+        directory: false,
+        multiple: false,
+        title: "Select Source File"
+    })
 
     // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
     document.getElementById('src-file-box').innerHTML =
@@ -118,9 +110,9 @@ srcButtonFile.addEventListener('click', function() {
 // Runs when the folder browse button on the local source path is pressed
 // Opens the folder browser dialog and updates the corresponding global variable accordingly
 const srcButtonFolder = document.getElementById('src-button-folder')
-srcButtonFolder.addEventListener('click', function() {
+srcButtonFolder.addEventListener('click', async function() {
     // Folder dialog
-    const path = open({
+    let path = await open({
         directory: true,
         multiple: false,
         recursive: true,
@@ -138,9 +130,9 @@ srcButtonFolder.addEventListener('click', function() {
 // Runs when the browse button on the remote destination path is pressed
 // Opens the folder browser dialog and updates the corresponding global variable accordingly
 const dstButton = document.getElementById('dst-button')
-dstButton.addEventListener('click', function() {
+dstButton.addEventListener('click', async function() {
     // Folder dialog
-    const path = open({
+    let path = await open({
         directory: true,
         multiple: false,
         recursive: false,
