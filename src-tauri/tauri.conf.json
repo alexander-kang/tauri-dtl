@@ -8,8 +8,8 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "tauri-dtl",
-    "version": "0.1.0"
+    "productName": "dtl",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {

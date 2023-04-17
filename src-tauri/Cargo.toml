@@ -1,6 +1,6 @@
 [package]
-name = "tauri-dtl"
-version = "0.1.0"
+name = "dtl"
+version = "1.0.0"
 description = "A Tauri desktop app written to easily distribute files across lab machines at Northwestern"
 authors = ["Alex Kang <alexkang2024@u.northwestern.edu>"]
 edition = "2021"
@@ -25,3 +25,9 @@ default = [ "custom-protocol" ]
 # this feature is used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
 custom-protocol = [ "tauri/custom-protocol" ]
+
+[profile.release]
+panic = "abort" # Strip expensive panic clean-up logic
+codegen-units = 1 # Compile crates one after another so the compiler can optimize better
+lto = true # Enables link time optimizations
+strip = true # Remove debug symbols
