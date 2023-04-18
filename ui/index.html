@@ -17,7 +17,7 @@
     <span>
       <!-- Which labs are being worked on -->
       <fieldset>
-        <legend>Labs</legend>
+        <legend id="labs-legend">Labs</legend>
         <input type="checkbox" id="lab1" name="labs" value="bodeen">
         <label for="lab1">Bodeen</label><br>
         <input type="checkbox" id="lab2" name="labs" value="mse">
@@ -36,7 +36,7 @@
 
       <!-- Local absolute path to data being transferred -->
       <fieldset>
-        <legend>Local source path</legend>
+        <legend id="src-legend">Local source path</legend>
         <div id="src-file-box">
           Select the file to be transferred:<br>
           <div class="button-box">
@@ -55,7 +55,7 @@
 
       <!-- Remote path to where data should be transferred -->
       <fieldset>
-        <legend>Remote destination path</legend>
+        <legend id="dst-legend">Remote destination path</legend>
         Select the directory to transfer to:<br>
         <div class="button-box">
           <button type="button" id="dst-button">Select</button>

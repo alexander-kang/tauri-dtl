@@ -29,6 +29,21 @@ submit.addEventListener('click', function() {
     }
     if (labsInputEmpty || !srcPath || !dstPath) {
         document.getElementById('form-error-text').innerHTML = "You must respond to every field of this form!"
+        if (labsInputEmpty) {
+            document.getElementById('labs-legend').style.color = 'red'
+        } else {
+            document.getElementById('labs-legend').style.color = 'black'
+        }
+        if (!srcPath) {
+            document.getElementById('src-legend').style.color = 'red'
+        } else {
+            document.getElementById('src-legend').style.color = 'black'
+        }
+        if (!dstPath) {
+            document.getElementById('dst-legend').style.color = 'red'
+        } else {
+            document.getElementById('dst-legend').style.color = 'black'
+        }
     }
     // If everything looks fine, call the custom command `handle_form_submit`
     else {
