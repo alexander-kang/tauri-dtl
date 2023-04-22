@@ -50,62 +50,41 @@ submit.addEventListener('click', function() {
         document.getElementById('form-error-text').innerHTML = ""
         // Note: the argument names are in camelCase here because the documentation said they should be (see: https://tauri.app/v1/guides/features/command/)
         invoke('handle_form_submit', { arrLabs: labs, srcPath: srcPath, dstPath: dstPath }).then(function(ret) {
-            console.log(ret)
             // Handling the return value
             // To see the details about the encoding of the return value, look at the code in main.rs
-            if (!ret) {
+            if (ret.result) {
                 // Successful operations so change the HTML accordingly
-                // Note that I chose not to simply load a different HTML page since I need to do something if there's a failure (see below for more info)
                 document.getElementById("body").innerHTML =
-                `<h1>File Distribution GUI</h1>
-                <br><br><br><br><br><br><br><br><br><br>
-                <p id="success">Success! You can close this window now.</p>`
+                `<h1>File Distribution GUI</h1><br>
+                <p>Success! You can close this window whenever you want.</p>
+                <h3>Log</h3>
+                <div id="success-box-holder">
+                    <div id="success-box">
+                        <p id="success-replace"></p>
+                    </div>
+                </div>`
+
+                document.getElementById('success-replace').innerHTML = "Successful operations:<br>" + ret.succ_log
             } else {
                 // Some operation failed so change the HTML accordingly
                 document.getElementById("body").innerHTML =
                 `<span id="failure">
-                    <h1>File Distribution GUI</h1>
-                    <br><br><br><br><br><br><br><br><br><br>
-                    <p>Something seems to have gone wrong.</p>
-                    <p id="failure-replace"></p>
-                    <p>Double check the source and destination paths you provided.</p>
-                    <p>You can close this window now.</p>
+                    <h1>File Distribution GUI</h1><br>
+                    <p>Whoops, something seems to have gone wrong.</p>
+                    <p>You can close this window whenever you want.</p>
+                    <h3>Log</h3>
+                    <div id="failure-box-holder">
+                        <div id="success-box">
+                            <p id="success-replace"></p>
+                        </div>
+                        <div id="failure-box">
+                            <p id="failure-replace"></p>
+                        </div>
+                    </div>
                 </span>`
 
-                // I couldn't think of a way to get the failure string into the HTML if we loaded a different page so that's why I simply changed the HTML
-                let failureString = "Specifically, file operations with the following labs seem to have failed:\n"
-
-                // Now go through the return value and find out which lab(s) failed
-                let failureStringLabs = ""
-
-                // Testing
-                if (ret & 1) {
-                    failureStringLabs += "TestingFailure "
-                }
-                // Look at Bodeen
-                if ((ret >> 1) & 1) {
-                    failureStringLabs += "Bodeen "
-                }
-                // Look at MSE
-                if ((ret >> 2) & 1) {
-                    failureStringLabs += "MSE "
-                }
-                // Look at ChBe
-                if ((ret >> 3) & 1) {
-                    failureStringLabs += "ChBe "
-                }
-                // Look at Segal
-                if ((ret >> 4) & 1) {
-                    failureStringLabs += "Segal "
-                }
-                // Look at MCC
-                if ((ret >> 5) & 1) {
-                    failureStringLabs += "MCC"
-                }
-
-                failureString = failureString + failureStringLabs
-
-                document.getElementById('failure-replace').innerHTML = failureString
+                document.getElementById('success-replace').innerHTML = "Successful operations:<br>" + ret.succ_log
+                document.getElementById('failure-replace').innerHTML = "Failed operations:<br>" + ret.fail_log
             }
         })
     }
@@ -133,6 +112,8 @@ srcButtonFile.addEventListener('click', async function() {
     document.getElementById('src-path-file').innerHTML = path
     // Gets rid of the select folder button
     document.getElementById('src-folder-box').innerHTML = ""
+    // Gets rid of the warning note
+    document.getElementById('warning-note').innerHTML = ""
     // Update internal state
     srcPath = path
 })
@@ -153,6 +134,8 @@ srcButtonFolder.addEventListener('click', async function() {
     document.getElementById('src-path-folder').innerHTML = path
     // Gets rid of the select file button
     document.getElementById('src-file-box').innerHTML = ""
+    // Gets rid of the warning note
+    document.getElementById('warning-note').innerHTML = ""
     // Update internal state
     srcPath = path
 })

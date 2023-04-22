@@ -1,17 +1,19 @@
 /* styles.css */
 
-h1 {
+body {
     text-align: center;
+}
+
+h1 {
     margin-bottom: 0px;
 }
 
 #subtitle {
-    text-align: center;
     line-height: 150%;
 }
 
-#warning-note {
-    text-align: center;
+.fieldset {
+    text-align: left;
 }
 
 .button-box {
@@ -31,7 +33,6 @@ h1 {
 }
 
 #form-error-text {
-    text-align: center;
     text-decoration: underline;
     font-weight: bold;
     color: red;
@@ -42,11 +43,26 @@ h1 {
     display: block;
 }
 
-#success {
-    text-align: center;
+#success-box-holder {
+    display: flex;
+    justify-content: center;
+}
+
+#failure-box-holder {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#success-box {
+    border: 1px solid black;
+    width: 300px;
 }
 
 #failure p {
-    text-align: center;
     line-height: 150%;
+}
+
+#failure-box {
+    border: 1px solid black;
+    width: 300px;
 }
