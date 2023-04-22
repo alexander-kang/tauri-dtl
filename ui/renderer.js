@@ -101,21 +101,24 @@ srcButtonFile.addEventListener('click', async function() {
         title: "Select Source File"
     })
 
-    // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
-    document.getElementById('src-file-box').innerHTML =
-    `Select the file to be transferred:<br>
-    <div class="button-box">
-        <button type="button" id="src-button-file">Select</button>
-        <p id="src-path-file"></p>
-    </div>`
-    // Shows the user's selected file path after the select file button
-    document.getElementById('src-path-file').innerHTML = path
-    // Gets rid of the select folder button
-    document.getElementById('src-folder-box').innerHTML = ""
-    // Gets rid of the warning note
-    document.getElementById('warning-note').innerHTML = ""
-    // Update internal state
-    srcPath = path
+    // If path is null, the user cancelled the dialog
+    if (path) {
+        // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
+        document.getElementById('src-file-box').innerHTML =
+        `Select the file to be transferred:<br>
+        <div class="button-box">
+            <button type="button" id="src-button-file">Select</button>
+            <p id="src-path-file"></p>
+        </div>`
+        // Shows the user's selected file path after the select file button
+        document.getElementById('src-path-file').innerHTML = path
+        // Gets rid of the select folder button
+        document.getElementById('src-folder-box').innerHTML = ""
+        // Gets rid of the warning note
+        document.getElementById('warning-note').innerHTML = ""
+        // Update internal state
+        srcPath = path
+    }
 })
 
 // Runs when the folder browse button on the local source path is pressed
@@ -130,14 +133,17 @@ srcButtonFolder.addEventListener('click', async function() {
         title: "Select Source Folder"
     })
 
-    // Shows the user's selected folder path after the select folder button
-    document.getElementById('src-path-folder').innerHTML = path
-    // Gets rid of the select file button
-    document.getElementById('src-file-box').innerHTML = ""
-    // Gets rid of the warning note
-    document.getElementById('warning-note').innerHTML = ""
-    // Update internal state
-    srcPath = path
+    // If path is null, the user cancelled the dialog
+    if (path) {
+        // Shows the user's selected folder path after the select folder button
+        document.getElementById('src-path-folder').innerHTML = path
+        // Gets rid of the select file button
+        document.getElementById('src-file-box').innerHTML = ""
+        // Gets rid of the warning note
+        document.getElementById('warning-note').innerHTML = ""
+        // Update internal state
+        srcPath = path
+    }
 })
 
 // Runs when the browse button on the remote destination path is pressed
@@ -152,10 +158,13 @@ dstButton.addEventListener('click', async function() {
         title: "Select Destination Folder"
     })
 
-    // Parse the path so that it can be used for file operations
-    path = path.substring(path.indexOf("$") - 1)
-    // Shows the user's post-parsing selected folder path after the select destination button
-    document.getElementById('dst-path').innerHTML = path
-    // Update internal state
-    dstPath = path
+    // If path is null, the user cancelled the dialog
+    if (path) {
+        // Parse the path so that it can be used for file operations
+        path = path.substring(path.indexOf("$") - 1)
+        // Shows the user's post-parsing selected folder path after the select destination button
+        document.getElementById('dst-path').innerHTML = path
+        // Update internal state
+        dstPath = path
+    }
 })
