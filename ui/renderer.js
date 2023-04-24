@@ -1,29 +1,31 @@
 // renderer.js
 
-// API imports
 const open = window.__TAURI__.dialog.open // Opening dialogs
 const invoke = window.__TAURI__.invoke // Calling custom commands
 
-// Global variables
 var srcPath // File path to copy from
 var dstPath // File path to copy to
 
-// Runs when the submit button is pressed
-// Handles form submission
+// Handle form submission
 const submit = document.getElementById('submit')
 submit.addEventListener('click', function() {
-    // Stores what labs they're working on in an array of booleans
-    let bodeen = document.getElementById('lab1').checked
-    let mse = document.getElementById('lab2').checked
-    let chbe = document.getElementById('lab3').checked
-    let segal = document.getElementById('lab4').checked
-    let mcc = document.getElementById('lab5').checked
-    let labs = [bodeen, mse, chbe, segal, mcc]
+    let bodeenSelected = document.getElementById('lab1-checkbox').checked
+    let bodeenSystems = [...document.getElementById('lab1-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let mseSelected = document.getElementById('lab2-checkbox').checked
+    let mseSystems = [...document.getElementById('lab2-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let chbeSelected = document.getElementById('lab3-checkbox').checked
+    let chbeSystems = [...document.getElementById('lab3-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let segalSelected = document.getElementById('lab4-checkbox').checked
+    let segalSystems = [...document.getElementById('lab4-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let mccSelected = document.getElementById('lab5-checkbox').checked
+    let mccSystems = [...document.getElementById('lab5-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let labsSelected = [bodeenSelected, mseSelected, chbeSelected, segalSelected, mccSelected]
+    let labsSystems = [bodeenSystems, mseSystems, chbeSystems, segalSystems, mccSystems]
 
-    // Checking that the user gave input for all the fields
+    // Validate user input
     let labsInputEmpty = true
-    for (let i = 0; i < labs.length; ++i) {
-        if (labs[i] == true) {
+    for (let i = 0; i < labsSelected.length; ++i) {
+        if (labsSelected[i] == true) {
             labsInputEmpty = false
         }
     }
@@ -44,16 +46,12 @@ submit.addEventListener('click', function() {
         } else {
             document.getElementById('dst-legend').style.color = 'black'
         }
-    }
-    // If everything looks fine, call the custom command `handle_form_submit`
-    else {
+    } else {
         document.getElementById('form-error-text').innerHTML = ""
         // Note: the argument names are in camelCase here because the documentation said they should be (see: https://tauri.app/v1/guides/features/command/)
-        invoke('handle_form_submit', { arrLabs: labs, srcPath: srcPath, dstPath: dstPath }).then(function(ret) {
-            // Handling the return value
-            // To see the details about the encoding of the return value, look at the code in main.rs
+        invoke('handle_form_submit', { arrLabsSelected: labsSelected, arrLabsSystems: labsSystems, srcPath: srcPath, dstPath: dstPath }).then(function(ret) {
             if (ret.result) {
-                // Successful operations so change the HTML accordingly
+                // Success
                 document.getElementById("body").innerHTML =
                 `<h1>File Distribution GUI</h1><br>
                 <p>Success! You can close this window whenever you want.</p>
@@ -66,7 +64,7 @@ submit.addEventListener('click', function() {
 
                 document.getElementById('success-replace').innerHTML = "Successful operations:<br>" + ret.succ_log
             } else {
-                // Some operation failed so change the HTML accordingly
+                // Fail
                 document.getElementById("body").innerHTML =
                 `<span id="failure">
                     <h1>File Distribution GUI</h1><br>
@@ -90,11 +88,66 @@ submit.addEventListener('click', function() {
     }
 })
 
-// Runs when the file browse button on the local source path is pressed
-// Opens the file browser dialog and updates the corresponding global variable accordingly
+// Toggle select tag based on state of corresponding lab's checkbox
+const bodeenCheckbox = document.getElementById('lab1-checkbox')
+bodeenCheckbox.addEventListener('click', function() {
+    const select = document.getElementById('lab1-select')
+    if (bodeenCheckbox.checked) {
+        select.disabled = false
+        select.size = "4"
+    } else {
+        select.disabled = true
+        select.size = "1"
+    }
+})
+const mseCheckbox = document.getElementById('lab2-checkbox')
+mseCheckbox.addEventListener('click', function() {
+    const select = document.getElementById('lab2-select')
+    if (mseCheckbox.checked) {
+        select.disabled = false
+        select.size = "4"
+    } else {
+        select.disabled = true
+        select.size = "1"
+    }
+})
+const chbeCheckbox = document.getElementById('lab3-checkbox')
+chbeCheckbox.addEventListener('click', function() {
+    const select = document.getElementById('lab3-select')
+    if (chbeCheckbox.checked) {
+        select.disabled = false
+        select.size = "4"
+    } else {
+        select.disabled = true
+        select.size = "1"
+    }
+})
+const segalCheckbox = document.getElementById('lab4-checkbox')
+segalCheckbox.addEventListener('click', function() {
+    const select = document.getElementById('lab4-select')
+    if (segalCheckbox.checked) {
+        select.disabled = false
+        select.size = "4"
+    } else {
+        select.disabled = true
+        select.size = "1"
+    }
+})
+const mccCheckbox = document.getElementById('lab5-checkbox')
+mccCheckbox.addEventListener('click', function() {
+    const select = document.getElementById('lab5-select')
+    if (mccCheckbox.checked) {
+        select.disabled = false
+        select.size = "4"
+    } else {
+        select.disabled = true
+        select.size = "1"
+    }
+})
+
+// Handle file browsing for src path
 const srcButtonFile = document.getElementById('src-button-file')
 srcButtonFile.addEventListener('click', async function() {
-    // File dialog
     let path = await open({
         directory: false,
         multiple: false,
@@ -103,29 +156,24 @@ srcButtonFile.addEventListener('click', async function() {
 
     // If path is null, the user cancelled the dialog
     if (path) {
-        // Gets rid of the extra <br> separating the select file and select folder buttons since we're getting rid of the select folder button
+        // Clean up UI
         document.getElementById('src-file-box').innerHTML =
         `Select the file to be transferred:<br>
         <div class="button-box">
             <button type="button" id="src-button-file">Select</button>
             <p id="src-path-file"></p>
         </div>`
-        // Shows the user's selected file path after the select file button
         document.getElementById('src-path-file').innerHTML = path
-        // Gets rid of the select folder button
         document.getElementById('src-folder-box').innerHTML = ""
-        // Gets rid of the warning note
         document.getElementById('warning-note').innerHTML = ""
-        // Update internal state
+
         srcPath = path
     }
 })
 
-// Runs when the folder browse button on the local source path is pressed
-// Opens the folder browser dialog and updates the corresponding global variable accordingly
+// Handle folder browsing for src path
 const srcButtonFolder = document.getElementById('src-button-folder')
 srcButtonFolder.addEventListener('click', async function() {
-    // Folder dialog
     let path = await open({
         directory: true,
         multiple: false,
@@ -135,22 +183,18 @@ srcButtonFolder.addEventListener('click', async function() {
 
     // If path is null, the user cancelled the dialog
     if (path) {
-        // Shows the user's selected folder path after the select folder button
+        // Clean up UI
         document.getElementById('src-path-folder').innerHTML = path
-        // Gets rid of the select file button
         document.getElementById('src-file-box').innerHTML = ""
-        // Gets rid of the warning note
         document.getElementById('warning-note').innerHTML = ""
-        // Update internal state
+
         srcPath = path
     }
 })
 
-// Runs when the browse button on the remote destination path is pressed
-// Opens the folder browser dialog and updates the corresponding global variable accordingly
+// Handle folder browsing for dst path
 const dstButton = document.getElementById('dst-button')
 dstButton.addEventListener('click', async function() {
-    // Folder dialog
     let path = await open({
         directory: true,
         multiple: false,
@@ -162,9 +206,10 @@ dstButton.addEventListener('click', async function() {
     if (path) {
         // Parse the path so that it can be used for file operations
         path = path.substring(path.indexOf("$") - 1)
-        // Shows the user's post-parsing selected folder path after the select destination button
+
+        // Clean up UI
         document.getElementById('dst-path').innerHTML = path
-        // Update internal state
+
         dstPath = path
     }
 })

@@ -14,19 +14,11 @@ struct Payload {
 }
 
 // Function that helps the custom command perform file operations
-// Returns a bool:
-//     true - success
-//     false - failure
+// Returns a bool indicating if the operation succeeded
 fn fs_helper(src_path: &str, dst_path: &str) -> bool {
-  // Make default copy options object
   let options: fs_extra::dir::CopyOptions = fs_extra::dir::CopyOptions::new();
-
-  // Make list to copy from (needed in order to use copy_items() from fs_extra)
   let mut from: Vec<&str> = Vec::new();
-  // Add src_path to this list
   from.push(src_path);
-
-  // Do the file operations and based on the copy_items() return value, return the corresponding integer
   match fs_extra::copy_items(&from, dst_path, &options) {
     Ok(_i) => return true,
     Err(_e) => return false
@@ -34,17 +26,9 @@ fn fs_helper(src_path: &str, dst_path: &str) -> bool {
 }
 
 // Custom command that handles form submission data and the corresponding file operations
-// labs: array of 5 bools that represents if the corresponding lab is being worked on
-//     0 - Bodeen
-//     1 - MSE
-//     2 - ChBe
-//     3 - Segal
-//     4 - MCC
-// src_path: string representing the file path to copy from
-// dst_path: string representing the parsed file path to copy to
-// Returns a Payload data type (see above)
+// To see arguments, look at renderer.js
 #[tauri::command]
-fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> Payload {
+fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [&[i32]; 5], src_path: &str, dst_path: &str) -> Payload {
   // Return variables
   let mut res: bool = true;
   let mut success_log_str: String = String::from("");
@@ -62,8 +46,8 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> Pa
   // Right half of template
   let template_right: String = ".mcc.northwestern.edu\\".to_string();
 
-  // Check if Bodeen is being worked on
-  if arr_labs[0] {
+  // Bodeen
+  if arr_labs_selected[0] {
     // Left half of template for Bodeen
     let bodeen_template_left: String = "\\\\bodeen-0".to_string();
     // Copy files to all 5 of the Bodeen systems
@@ -87,8 +71,8 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> Pa
     }
   }
 
-  // Check if MSE is being worked on
-  if arr_labs[1] {
+  // MSE
+  if arr_labs_selected[1] {
     // Left half of template for MSE
     let mse_template_left: String = "\\\\mse-0".to_string();
     // Copy files to all 7 of the MSE systems
@@ -112,8 +96,8 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> Pa
     }
   }
 
-  // Check if ChBe is being worked on
-  if arr_labs[2] {
+  // ChBe
+  if arr_labs_selected[2] {
     // Left half of template for ChBe
     let chbe_template_left: String = "\\\\e1-chbe-0".to_string();
     // Copy files to all 8 of the ChBe systems
@@ -137,8 +121,8 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> Pa
     }
   }
 
-  // Check if Segal is being worked on
-  if arr_labs[3] {
+  // Segal
+  if arr_labs_selected[3] {
     // Left half of template for Segal
     let segal_template_left: String = "\\\\e1-segal-0".to_string();
     // Copy files to all 7 of the Segal systems
@@ -162,8 +146,8 @@ fn handle_form_submit(arr_labs: [bool; 5], src_path: &str, dst_path: &str) -> Pa
     }
   }
 
-  // Check if MCC is being worked on
-  if arr_labs[4] {
+  // MCC
+  if arr_labs_selected[4] {
     // Left half of template for MCC
     let mcc_template_left: String = "\\\\e1-mcc-0".to_string();
     // Copy files to all 26 of the MCC systems

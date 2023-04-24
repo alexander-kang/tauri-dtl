@@ -16,6 +16,26 @@ h1 {
     text-align: left;
 }
 
+#lab1-select-box {
+    padding-left: 40px;
+}
+
+#lab2-select-box {
+    padding-left: 40px;
+}
+
+#lab3-select-box {
+    padding-left: 40px;
+}
+
+#lab4-select-box {
+    padding-left: 40px;
+}
+
+#lab5-select-box {
+    padding-left: 40px;
+}
+
 .button-box {
     display: flex;
     justify-content: flex-start;

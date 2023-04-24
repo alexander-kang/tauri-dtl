@@ -16,18 +16,97 @@
     <!-- Form that collects necessary data from the user -->
     <span>
       <!-- Which labs are being worked on -->
+      <p>Leave the system selection prompt blank to copy onto every system in the selected lab.</p>
       <fieldset class="fieldset">
         <legend id="labs-legend">Labs</legend>
-        <input type="checkbox" id="lab1" name="labs" value="bodeen">
-        <label for="lab1">Bodeen</label><br>
-        <input type="checkbox" id="lab2" name="labs" value="mse">
+        <input type="checkbox" id="lab1-checkbox" name="labs-checkbox" value="bodeen">
+        <label for="lab1-checkbox">Bodeen</label><br>
+        <div id="lab1-select-box">
+          <label for="lab1-select">Select systems: </label>
+          <select name="labs-select" id="lab1-select" size="1" multiple disabled>
+            <option value="1">1&nbsp;&nbsp;</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <input type="checkbox" id="lab2-checkbox" name="labs-checkbox" value="mse">
         <label for="lab2">MSE</label><br>
-        <input type="checkbox" id="lab3" name="labs" value="chbe">
+        <div id="lab2-select-box">
+          <label for="lab2-select">Select systems: </label>
+          <select name="labs-select" id="lab2-select" size="1" multiple disabled>
+            <option value="1">1&nbsp;&nbsp;</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+        </div>
+        <input type="checkbox" id="lab3-checkbox" name="labs-checkbox" value="chbe">
         <label for="lab3">ChBe</label><br>
-        <input type="checkbox" id="lab4" name="labs" value="segal">
+        <div id="lab3-select-box">
+          <label for="lab3-select">Select systems: </label>
+          <select name="labs-select" id="lab3-select" size="1" multiple disabled>
+            <option value="1">1&nbsp;&nbsp;</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+        </div>
+        <input type="checkbox" id="lab4-checkbox" name="labs-checkbox" value="segal">
         <label for="lab4">Segal</label><br>
-        <input type="checkbox" id="lab5" name="labs" value="mcc">
+        <div id="lab4-select-box">
+          <label for="lab4-select">Select systems: </label>
+          <select name="labs-select" id="lab4-select" size="1" multiple disabled>
+            <option value="1">1&nbsp;&nbsp;</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+        </div>
+        <input type="checkbox" id="lab5-checkbox" name="labs-checkbox" value="mcc">
         <label for="lab5">MCC</label><br>
+        <div id="lab5-select-box">
+          <label for="lab5-select">Select systems: </label>
+          <select name="labs-select" id="lab5-select" size="1" multiple disabled>
+            <option value="1">1&nbsp;&nbsp;</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+          </select>
+        </div>
       </fieldset>
 
       <!-- Warning that the user shouldn't try to use both of the local source path buttons -->
@@ -67,7 +146,7 @@
       <p id="form-error-text"></p>
 
       <!-- Submit the form -->
-      <input type="submit" id="submit" value="Continue"></input>
+      <input type="submit" id="submit" value="Continue">
     </span>
 
     <script src="renderer.js"></script>
