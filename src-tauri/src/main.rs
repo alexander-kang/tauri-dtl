@@ -28,7 +28,7 @@ fn fs_helper(src_path: &str, dst_path: &str) -> bool {
 // Custom command that handles form submission data and the corresponding file operations
 // To see arguments, look at renderer.js
 #[tauri::command]
-fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [&[i32]; 5], src_path: &str, dst_path: &str) -> Payload {
+fn handle_form_submit(arr_labs_selected: [bool; 5], src_path: &str, dst_path: &str) -> Payload {
   // Return variables
   let mut res: bool = true;
   let mut success_log_str: String = String::from("");
@@ -149,12 +149,16 @@ fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [&[i32]; 5
   // MCC
   if arr_labs_selected[4] {
     // Left half of template for MCC
-    let mcc_template_left: String = "\\\\e1-mcc-0".to_string();
+    let mcc_template_left: String = "\\\\e1-mcc-".to_string();
     // Copy files to all 26 of the MCC systems
     for i in 1..27 {
-      let i_str: String = i.to_string();
+      let mut i_str: String = i.to_string();
+      if i <= 9 {
+        i_str = format!("{}{}", 0, i_str);
+      }
       // Put everything together to get the final destination path
       let combined_mcc_dst_path: String = format!("{}{}{}{}", mcc_template_left, i_str, template_right, dst_path);
+      println!("{}", combined_mcc_dst_path);
       // Perform file operation
       let rc: bool = fs_helper(src_path, combined_mcc_dst_path.as_str());
       // Update the return variables
