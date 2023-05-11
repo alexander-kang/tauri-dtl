@@ -1,24 +1,36 @@
 // renderer.js
 
-const open = window.__TAURI__.dialog.open // Opening dialogs
-const invoke = window.__TAURI__.invoke // Calling custom commands
+const open = window.__TAURI__.dialog.open
+const invoke = window.__TAURI__.invoke
 
-var srcPath // File path to copy from
-var dstPath // File path to copy to
+var srcPath
+var dstPath
+
+// Helper function that converts given array into a bit encoding
+function convToBin(arr) {
+    let ret = 0b0
+    for (let i = 0; i < arr.length; ++i) {
+        if (arr[i]) {
+            ret = ret | (1 << i)
+        }
+    }
+    return ret
+}
 
 // Handle form submission
 const submit = document.getElementById('submit')
 submit.addEventListener('click', function() {
+    // Handle lab & system selections
     let bodeenSelected = document.getElementById('lab1-checkbox').checked
-    let bodeenSystems = [...document.getElementById('lab1-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let bodeenSystems = convToBin([...document.getElementById('lab1-select').options].map(option => option.selected))
     let mseSelected = document.getElementById('lab2-checkbox').checked
-    let mseSystems = [...document.getElementById('lab2-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let mseSystems = convToBin([...document.getElementById('lab2-select').options].map(option => option.selected))
     let chbeSelected = document.getElementById('lab3-checkbox').checked
-    let chbeSystems = [...document.getElementById('lab3-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let chbeSystems = convToBin([...document.getElementById('lab3-select').options].map(option => option.selected))
     let segalSelected = document.getElementById('lab4-checkbox').checked
-    let segalSystems = [...document.getElementById('lab4-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let segalSystems = convToBin([...document.getElementById('lab4-select').options].map(option => option.selected))
     let mccSelected = document.getElementById('lab5-checkbox').checked
-    let mccSystems = [...document.getElementById('lab5-select').options].filter(option => option.selected).map(option => parseInt(option.value, 10))
+    let mccSystems = convToBin([...document.getElementById('lab5-select').options].map(option => option.selected))
     let labsSelected = [bodeenSelected, mseSelected, chbeSelected, segalSelected, mccSelected]
     let labsSystems = [bodeenSystems, mseSystems, chbeSystems, segalSystems, mccSystems]
 
@@ -46,6 +58,7 @@ submit.addEventListener('click', function() {
         } else {
             document.getElementById('dst-legend').style.color = 'black'
         }
+    // If all good to go, call custom command
     } else {
         document.getElementById('form-error-text').innerHTML = ""
         // Note: the argument names are in camelCase here because the documentation said they should be (see: https://tauri.app/v1/guides/features/command/)
