@@ -48,8 +48,6 @@ Potential failures:
 There are many ways for the file operations to fail but here are some common failures to check against:
     - There's currently a bug where if a system is not connected to the network (e.g., powered off, Ethernet unplugged), file operations
       will fail for that system and all systems in the same lab after that. I'm currently working on patching this.
-    - If there's a file already in the destination with the same name as the file you're copying over from your local machine, the
-      operation will fail. It doesn't matter if the contents of the file are different, all that matters is the file name.
     - I'll continue to add more here as I encounter them.
 -------------------------------------------------------------------------------------------------------------------------------------------
 Contacting me:
