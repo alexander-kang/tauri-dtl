@@ -20,7 +20,7 @@
       <!-- Which labs are being worked on -->
       <p>Leave the system selection prompt blank to copy onto every system in the selected lab.</p>
       <fieldset class="fieldset">
-        <legend id="labs-legend">Labs</legend>
+        <legend id="labs-legend">Labs *</legend>
         <input type="checkbox" id="lab1-checkbox" name="labs-checkbox" value="bodeen">
         <label for="lab1-checkbox">Bodeen</label><br>
         <div id="lab1-select-box">
@@ -117,7 +117,7 @@
 
       <!-- Local absolute path to data being transferred -->
       <fieldset class="fieldset">
-        <legend id="src-legend">Local source path</legend>
+        <legend id="src-legend">Local source path *</legend>
         <div id="src-file-box">
           Select the file to be transferred:<br>
           <div class="button-box">
@@ -136,12 +136,19 @@
 
       <!-- Remote path to where data should be transferred -->
       <fieldset class="fieldset">
-        <legend id="dst-legend">Remote destination path</legend>
+        <legend id="dst-legend">Remote destination path *</legend>
         Select the directory to transfer to:<br>
         <div class="button-box">
           <button type="button" id="dst-button">Select</button>
           <p id="dst-path"></span>
         </div>
+      </fieldset><br>
+
+      <!-- Additional settings -->
+      <fieldset class="fieldset">
+        <legend id="settings-legend">Settings</legend>
+        <input type="checkbox" id="setting1-checkbox" name="settings-checkbox" value="overwrite">
+        <label for="setting1-checkbox">Overwrite existing files of same name (leave blank to skip existing files of same name)</label><br>
       </fieldset>
 
       <!-- Shows up if the user didn't give an entry for every field of the form -->

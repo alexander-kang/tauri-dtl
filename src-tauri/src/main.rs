@@ -15,8 +15,10 @@ struct Payload {
 
 // Function that helps the custom command perform file operations
 // Returns a bool indicating if the operation succeeded
-fn fs_helper(src_path: &str, dst_path: &str) -> bool {
-  let options: fs_extra::dir::CopyOptions = fs_extra::dir::CopyOptions::new();
+fn fs_helper(src_path: &str, dst_path: &str, overwrite: bool) -> bool {
+  let mut options: fs_extra::dir::CopyOptions = fs_extra::dir::CopyOptions::new();
+  options.overwrite = overwrite;
+  options.skip_exist = !overwrite;
   let mut from: Vec<&str> = Vec::new();
   from.push(src_path);
   match fs_extra::copy_items(&from, dst_path, &options) {
@@ -28,13 +30,13 @@ fn fs_helper(src_path: &str, dst_path: &str) -> bool {
 // Custom command that handles form submission data and the corresponding file operations
 // To see arguments, look at renderer.js
 #[tauri::command]
-fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [u32; 5], src_path: &str, dst_path: &str) -> Payload {
+fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [u32; 5], src_path: &str, dst_path: &str, overwrite: bool) -> Payload {
   let mut res: bool = true;
   let mut success_log_str: String = String::from("");
   let mut failure_log_str: String = String::from("");
 
   // // Testing code:
-  // let rc: bool = fs_helper(src_path, dst_path);
+  // let rc: bool = fs_helper(src_path, dst_path, false);
   // if !rc {
   //   res = false;
   //   failure_log_str.push_str("test code");
@@ -65,7 +67,7 @@ fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [u32; 5], 
       let i_str: String = i.to_string();
       let combined_bodeen_dst_path: String = format!("{}{}{}{}", bodeen_template_left, i_str, template_right, dst_path);
 
-      let rc: bool = fs_helper(src_path, combined_bodeen_dst_path.as_str());
+      let rc: bool = fs_helper(src_path, combined_bodeen_dst_path.as_str(), overwrite);
 
       if !rc {
         res = false;
@@ -101,7 +103,7 @@ fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [u32; 5], 
       let i_str: String = i.to_string();
       let combined_mse_dst_path: String = format!("{}{}{}{}", mse_template_left, i_str, template_right, dst_path);
 
-      let rc: bool = fs_helper(src_path, combined_mse_dst_path.as_str());
+      let rc: bool = fs_helper(src_path, combined_mse_dst_path.as_str(), overwrite);
 
       if !rc {
         res = false;
@@ -137,7 +139,7 @@ fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [u32; 5], 
       let i_str: String = i.to_string();
       let combined_chbe_dst_path: String = format!("{}{}{}{}", chbe_template_left, i_str, template_right, dst_path);
 
-      let rc: bool = fs_helper(src_path, combined_chbe_dst_path.as_str());
+      let rc: bool = fs_helper(src_path, combined_chbe_dst_path.as_str(), overwrite);
 
       if !rc {
         res = false;
@@ -173,7 +175,7 @@ fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [u32; 5], 
       let i_str: String = i.to_string();
       let combined_segal_dst_path: String = format!("{}{}{}{}", segal_template_left, i_str, template_right, dst_path);
 
-      let rc: bool = fs_helper(src_path, combined_segal_dst_path.as_str());
+      let rc: bool = fs_helper(src_path, combined_segal_dst_path.as_str(), overwrite);
 
       if !rc {
         res = false;
@@ -212,7 +214,7 @@ fn handle_form_submit(arr_labs_selected: [bool; 5], arr_labs_systems: [u32; 5], 
       }
       let combined_mcc_dst_path: String = format!("{}{}{}{}", mcc_template_left, i_str, template_right, dst_path);
 
-      let rc: bool = fs_helper(src_path, combined_mcc_dst_path.as_str());
+      let rc: bool = fs_helper(src_path, combined_mcc_dst_path.as_str(), overwrite);
 
       if !rc {
         res = false;

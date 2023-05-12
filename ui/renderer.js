@@ -42,7 +42,7 @@ submit.addEventListener('click', function() {
         }
     }
     if (labsInputEmpty || !srcPath || !dstPath) {
-        document.getElementById('form-error-text').innerHTML = "You must respond to every field of this form!"
+        document.getElementById('form-error-text').innerHTML = "You must respond to all relevant fields of the form!"
         if (labsInputEmpty) {
             document.getElementById('labs-legend').style.color = 'red'
         } else {
@@ -61,8 +61,10 @@ submit.addEventListener('click', function() {
     // If all good to go, call custom command
     } else {
         document.getElementById('form-error-text').innerHTML = ""
+        let overwrite = document.getElementById('setting1-checkbox').checked
+        console.log(overwrite)
         // Note: the argument names are in camelCase here because the documentation said they should be (see: https://tauri.app/v1/guides/features/command/)
-        invoke('handle_form_submit', { arrLabsSelected: labsSelected, arrLabsSystems: labsSystems, srcPath: srcPath, dstPath: dstPath }).then(function(ret) {
+        invoke('handle_form_submit', { arrLabsSelected: labsSelected, arrLabsSystems: labsSystems, srcPath: srcPath, dstPath: dstPath, overwrite: overwrite }).then(function(ret) {
             if (ret.result) {
                 // Success
                 document.getElementById("body").innerHTML =

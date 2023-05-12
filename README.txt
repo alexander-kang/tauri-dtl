@@ -1,13 +1,14 @@
 This is the README bundled with dtl.exe, a GUI designed to easily distribute files across lab machines managed by McCormick PC Support.
 
-In general, the GUI is fairly self-explanatory but this README will explain the aspects of it that are not immediately apparent.
+In general, the tool is fairly self-explanatory but this README will explain the aspects of it that are not immediately apparent.
 
 Before beginning, it's worth noting that use of this tool requires domain-level access on the network.
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 Homepage:
 
-Note that all three of the fields described below are mandatory.
+Note that the first three of the fields described below are mandatory while the last one is optional. This is indicated in the UI with
+a * next to the title of fields that are mandatory.
 
 Labs:
 In this section, simply check the box of whatever lab(s) you'd like to copy files to. Once you've done so for a lab, you'll notice that
@@ -26,6 +27,14 @@ up, a legal selection would look something like this: "\\bodeen-01.mcc.northwest
 here that even though it would seem like the operation would only copy your selected file/directory to Bodeen system 1, that is actually
 not the case. Behind the scenes, the GUI will parse your input and figure out that you want your selected file/directory to end up at
 "c$\Users\wsadmin\Downloads" on all the machines in the lab(s) you selected.
+
+Settings:
+The default behavior of the tool when copying files over when there's already a pre-existing file in the destination of the same name and
+extension is simply to skip the pre-existing file and not copy the new one over. In other words, if you try to copy "test.txt" from src
+into a dst with a pre-existing "test.txt", the operation won't happen and the "test.txt" that was already on dst will stay. It's worth
+noting that this will go into the log as a successful operation as this is the expected behavior of the tool, not an error. The user may
+elect to override this default behavior and overwrite pre-existing files of the same name by checking the box labeled "Overwrite existing
+files of same name".
 -------------------------------------------------------------------------------------------------------------------------------------------
 Continuing on:
 
