@@ -75,9 +75,12 @@ submit.addEventListener('click', function() {
                     <div id="success-box">
                         <p id="success-replace"></p>
                     </div>
-                </div>`
+                </div>
+                <p>As a reminder, here are the paths you gave:<br><br>Source: <span id="src-replace"></span><br><br>Destination: <span id="dst-replace"></span></p>`
 
                 document.getElementById('success-replace').innerHTML = "Successful operations:<br>" + ret.succ_log
+                document.getElementById('src-replace').innerHTML = srcPath
+                document.getElementById('dst-replace').innerHTML = dstPath
             } else {
                 // Fail
                 document.getElementById("body").innerHTML =
@@ -94,10 +97,13 @@ submit.addEventListener('click', function() {
                             <p id="failure-replace"></p>
                         </div>
                     </div>
-                </span>`
+                </span>
+                <p>As a reminder, here are the paths you gave:<br><br>Source: <span id="src-replace"></span><br><br>Destination: <span id="dst-replace"></span></p>`
 
                 document.getElementById('success-replace').innerHTML = "Successful operations:<br>" + ret.succ_log
                 document.getElementById('failure-replace').innerHTML = "Failed operations:<br>" + ret.fail_log
+                document.getElementById('src-replace').innerHTML = srcPath
+                document.getElementById('dst-replace').innerHTML = dstPath
             }
         })
     }

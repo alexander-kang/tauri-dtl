@@ -39,16 +39,22 @@ files of same name".
 Continuing on:
 
 Now, you can press the "Continue" button. If you missed one of the fields, pressing the "Continue" button will tell you that you must
-respond to all three fields and will turn the header of the field(s) that you missed red. After fixing the issue and retrying the button,
-it should let you continue. After a slight delay (that gets longer the more systems you have selected), you'll be met with either a sucess
-or failure screen. In either case, there will be a log of operations that were completed or failed to complete. After browsing through the
-log or skipping it altogether, you can close the GUI whenever you'd like.
+respond to all three of the required fields and will turn the header of the field(s) that you missed red. After fixing the issue and
+retrying the button, it should let you continue. After a slight delay (that gets longer the more systems you have selected), you'll be met
+with either a sucess or failure screen. In either case, there will be a log of operations that were completed or failed to complete. Under
+the log, there will be a reminder of what source and destination paths you inputted in the previous screen. After browsing through this
+screen or skipping it altogether, you can close the GUI whenever you'd like.
 
 Potential failures:
 There are many ways for the file operations to fail but here are some common failures to check against:
-    - There's currently a bug where if a system is not connected to the network (e.g., powered off, Ethernet unplugged), file operations
-      will fail for that system and all systems in the same lab after that. I'm currently working on patching this.
-    - I'll continue to add more here as I encounter them.
+    - The destination path you inputted doesn't exist on the system(s) you're targeting
+    - A system is offline or disconnected from the network
+-------------------------------------------------------------------------------------------------------------------------------------------
+Repository:
+
+The source code for this tool, along with a brief setup guide, are public and can be located at this URL:
+https://github.com/alexander-kang/tauri-dtl
+If you'd like to make changes or updates, feel free to fork the repository or simply download the code onto your system and edit it there.
 -------------------------------------------------------------------------------------------------------------------------------------------
 Contacting me:
 

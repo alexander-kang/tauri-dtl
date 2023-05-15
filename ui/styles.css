@@ -86,3 +86,11 @@ h1 {
     border: 1px solid black;
     width: 300px;
 }
+
+#src-replace {
+    text-decoration: underline;
+}
+
+#dst-replace {
+    text-decoration: underline;
+}
